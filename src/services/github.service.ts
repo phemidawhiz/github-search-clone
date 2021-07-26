@@ -3,8 +3,7 @@ import { createGQLClient } from 'lib/graphql';
 import { IAuthInfo } from 'types/user';
 
 const getAuthTokens = (): string | null => {
-  try {
-      // The problem was here
+  try { //use try catch blocks to make sure page does not break when localStorage is not defined
       const userData = JSON.parse(localStorage?.getItem("user") as string) as IAuthInfo;
       if (userData.access_token !== null) {
           return userData.access_token;
@@ -12,7 +11,7 @@ const getAuthTokens = (): string | null => {
 
       return null;
   } catch (e) {
-      console.log(e.message);
+      console.error(e.message);
       return null;
   }
 };

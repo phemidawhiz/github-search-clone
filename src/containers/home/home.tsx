@@ -39,7 +39,8 @@ const Home: NextPage<{}> = (): JSX.Element => {
           localStorage.setItem("isLoggedIn", JSON.stringify(true))
           localStorage.setItem("user", JSON.stringify(data?.data))
           updateUser(data as IAuthInfo);
-          Router.push(config.defaultPath);
+          //Router.push(config.defaultPath); //works smoothly without page reload but doesn't load styles
+          window.location.assign(config.defaultPath); //to make sure stylesheets load properly
         })
         .catch(error => {
           console.log("error: ", error);
@@ -49,6 +50,12 @@ const Home: NextPage<{}> = (): JSX.Element => {
           });
         });
     };
+
+    const loggedInState: boolean = JSON.parse(localStorage.getItem("isLoggedIn") as string) as boolean;
+
+    if(loggedInState) {
+      Router.push('/app/dashboard');
+    }
     
   }, []);
 
