@@ -20,11 +20,11 @@ export interface IOptions {
 export interface IInputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
   validation?: InputValidationTypes;
   maxlength?: number;
+  isInHeader?: boolean;
   handleInputChange?: (e: any) => void;
 }
 
-export const Input = React.forwardRef<HTMLInputElement, IInputProps>(({ handleInputChange, maxlength, validation, ...props }, ref) => {
-  const classes = composeClasses(styles.input, props.className);
+export const Input = React.forwardRef<HTMLInputElement, IInputProps>(({ handleInputChange, isInHeader, maxlength, validation, ...props }, ref) => {
 
   const [validationError, setValidationError] = useState('');
 
@@ -68,7 +68,7 @@ export const Input = React.forwardRef<HTMLInputElement, IInputProps>(({ handleIn
   return (
     <>
       <input
-        className={classes}
+        className={ isInHeader ? composeClasses(styles.smallInput, styles.input) : styles.input}
         maxLength={maxlength}
         onChange={validation && onChangeValidation}
         ref={ref}

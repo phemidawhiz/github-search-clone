@@ -4,6 +4,7 @@ import githublogo from 'assets/images/githublogo.png';
 import styles from './Header.scss';
 import { IHeaderProps } from 'types/interfaces';
 import { composeClasses } from 'utils/generic';
+import { Input } from 'components/GitSearchInput/GitSearchInput';
 
 const Header: React.SFC<IHeaderProps> = ({
   username,
@@ -26,7 +27,7 @@ const Header: React.SFC<IHeaderProps> = ({
       <div>
         {
             state ? (
-              'Search'
+              <Input isInHeader={true} />
             ) : (
               ''
             )
