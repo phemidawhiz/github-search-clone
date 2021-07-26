@@ -1,5 +1,4 @@
 import React from 'react';
-import Router from 'next/router';
 
 import { ReactComponent as Loader } from 'assets/icons/loader.svg';
 import { composeClasses } from '../../utils/generic';
