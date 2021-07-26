@@ -1,0 +1,21 @@
+@import "variables";
+@import "extends";
+
+.button {
+  border-radius: 5px;
+  cursor: pointer;
+  @include fontDetails('Open Sans', 21px, $color-white, 16px, bold);
+  padding: 10px 30px;
+  transition: .3s background-color ease-in-out;
+  background-color: $grey-black;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:disabled {
+    background-color: grey;
+    border-color: grey;
+    cursor: not-allowed;
+  }
+}

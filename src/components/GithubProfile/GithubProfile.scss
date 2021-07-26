@@ -1,0 +1,44 @@
+@import "variables";
+@import "extends";
+
+.wrapper {
+  img {
+    height: auto !important;
+    width: 50px !important;
+    display: inline-block;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+
+  span, h6 {
+    display: inline-block;
+    cursor: pointer;
+    @include fontDetails('Open Sans', 15px, $color-black-2, 14px, bold, left);
+  }
+
+  h6 {
+    margin-top: 0;
+  }
+
+}
+
+.downArrow {
+  width: 5px !important;
+  height: 5px !important;
+}
+
+.logout {
+  padding: 20px;
+  @include fontDetails('Open Sans', 21px, $color-error-red, 16px, normal, center);
+  cursor: pointer;
+  border: 1px solid rgba(196, 203, 214, 0.3);
+  width: 120px;
+  margin-left: 100px;
+  display: none;
+  background-color: $color-white;
+}
+
+.clickedState {
+  display: block !important;
+}

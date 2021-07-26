@@ -1,0 +1,27 @@
+@import "variables";
+@import "extends";
+
+.wrapper {
+  width: 680px;
+  @extend %resultWrapper;
+  padding: 10px 15px !important;
+
+  h4 {
+    @include fontDetails('Open Sans', 21px, $color-black, 16px, bold);
+    padding: 0px 10px;
+    margin: 20px 0px 0px 0px;
+  }
+  p, span {
+    padding: 10px;
+    margin: 0;
+    @include fontDetails('Open Sans', 21px, $color-grey-b, 16px, normal);
+  }
+}
+
+.fetched {
+  background-color: $background-grey;
+}
+
+.reducedHeight {
+  height: 100px !important;
+}

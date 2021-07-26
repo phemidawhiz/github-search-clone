@@ -1,0 +1,67 @@
+@import "../styles/variables";
+
+@mixin fontDetails($family, $lineHeight, $color, $size, $weight: normal, $alignment: left) {
+  color: $color;
+  font-family: $family;
+  line-height: $lineHeight;
+  text-align: $alignment;
+  font-weight: $weight;
+  font-size: $size;
+}
+
+%resultWrapper {
+  height: 140px;
+  background: $color-white;
+  box-shadow: 0px 6px 58px rgba(196, 203, 214, 0.1);
+  border-radius: 3px;
+  padding: 20px 15px;
+}
+
+%container {
+  margin: 0 auto;
+  max-width: $page-width;
+  padding: 0 3vw;
+  width: 100%;
+}
+
+%column {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  >div {
+    flex-shrink: 0;
+  }
+}
+
+// TODO: Move all these column styles into a proper grid system
+%twoColumns {
+  @extend %column;
+
+  >div {
+    min-width: 300px;
+    width: 40%;
+
+    @media #{$mobile-only} {
+      width: 100%;
+    }
+  }
+}
+
+%fourColumns {
+  @extend %column;
+
+  >div {
+    min-width: 300px;
+    width: 23%;
+  }
+}
+
+%subtitle {
+  font-size: 16px;
+  line-height: 1.56;
+
+  @media #{$mobile-and-up} {
+    font-size: 18px;
+  }
+}

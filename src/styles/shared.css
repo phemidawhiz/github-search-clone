@@ -1,0 +1,276 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  line-height: normal;
+}
+
+body {
+  background-color: #FAFAFA;
+  color: #383838;
+  font-family: 'Raleway', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  overflow: auto !important;
+  padding: 0;
+  
+}
+
+a {
+  transition: opacity .3s ease-in-out;
+}
+
+a:hover {
+  opacity: .8;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.rowHover:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.rowHover:hover .hLink {
+  text-decoration: underline;
+}
+
+h1 {
+  color: #383838;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+@media only screen and (min-width: 700px) {
+  h1 {
+    font-size: 50px;
+  }
+}
+
+/* Utils */
+.capitalize {
+  text-transform: capitalize;
+}
+
+.loader {
+  display: block;
+  margin: 50px auto;
+  stroke: rgba(0, 0, 0, .5);
+}
+
+.icon {
+  fill: #707070;
+  width: 25px;
+  height: 20px;
+  cursor: pointer;
+}
+
+input,
+select,
+textarea,
+button {
+  outline: none;
+}
+
+textarea {
+  resize: none;
+}
+.uppercase {
+  text-transform: uppercase;
+}
+
+.emptyStateText {
+  padding: 20px;
+}
+
+.valign-wrapper {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center
+}
+
+@media only screen and (max-width: 700px) {
+  .emptyStateText {
+    padding: 10px;
+  }
+}
+
+/* Generic Transition */
+.basicTransition-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.basicTransition-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.basicTransition-exit {
+  opacity: 1;
+}
+
+.basicTransition-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+a.no-decor {
+  text-decoration: none;
+}
+
+.show-on-small {
+  display: none;
+}
+
+@media only screen and (max-width: 700px) {
+  .hideOnMobile {
+    display: none;
+  }
+
+  .show-on-small {
+    display: block !important
+  }
+}
+
+/* Hide HTML5 Up and Down arrows. */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+body .hide {
+  display: none;
+}
+
+.strong {
+  font-weight: bold;
+}
+
+.align-center {
+  text-align: center;
+}
+
+.warning-text {
+  color: #f06018;
+}
+
+.error-text {
+  color: red;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+.padding-5 {
+  padding: 5px;
+}
+
+.padding-10 {
+  padding: 10px !important;
+}
+
+.padding-left-10 {
+  padding-left: 10px !important;
+}
+
+.padding-15 {
+  padding: 15px !important;
+}
+
+.padding-15-30 {
+    padding: 15px 30px !important;
+}
+
+.margin-10 {
+  margin: 10px !important;
+}
+
+.margin-15 {
+  margin: 15px !important;
+}
+
+.margin-top-bottom-5 {
+  margin: 5px 0 !important;
+}
+
+.margin-top-bottom-10 {
+  margin: 10px 0 !important;
+}
+
+.margin-top-bottom-15 {
+  margin: 15px 0 !important;
+}
+
+.block {
+  display: block;
+}
+
+.block.force-width {
+  width: 100%;
+}
+
+.no-text-shadow {
+  text-shadow: none;
+}
+
+.transition-fade-in {
+  opacity: 1;
+
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in;
+  animation-name: transition-fade-in;
+
+  -webkit-animation-duration: 0.5s;
+  -webkit-animation-timing-function: ease-in;
+  -webkit-animation-name: transition-fade-in;
+
+}
+
+.display-flex {
+  display: flex;
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes transition-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes transition-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+html {
+  line-height: normal;
+}

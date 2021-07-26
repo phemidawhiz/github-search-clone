@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "sourceMap": true
+    },
+    "files": [
+        "external-scripts/v1/inline.ts",
+        "external-scripts/v2/inline.ts"
+    ],
+    "exclude": [
+        "next.config.js",
+        "server.js",
+        "node_modules",
+        "src",
+        "build",
+        ".storybook"
+    ],
+    "compileOnSave": true
+}
