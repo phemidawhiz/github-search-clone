@@ -48,7 +48,8 @@
   small {
     @include fontDetails('Open Sans', 29px, $color-grey-d, 16px, 500);
     display: inline-block;
-    margin: 0 8px;
+    margin: 0 12px;
+    word-spacing: 8px;
   }
 
   span {

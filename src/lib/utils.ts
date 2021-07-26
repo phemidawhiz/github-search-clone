@@ -14,16 +14,15 @@ export const makeCountCommaSeperated = (num: string | number) => {
 
 export const getPageNumbers = (resultCount: number): string => {
   let pageNumbersInfo: string = '';
-  const pages: number = resultCount/RECORDS_PER_PAGE;
+  const pages: number = Math.floor(resultCount/RECORDS_PER_PAGE);
   try {
     for(let i=1; i<pages; i++) {
       pageNumbersInfo = pageNumbersInfo + '  ' + (String(i))
     }
   
     if(pages > 6) {
-      return pageNumbersInfo + ' ... ' + formatCount(pages);
+      return '1 2 3 4 5 6 ... ' + formatCount(pages);
     }
-    console.log("pageNumbersInfo: ", resultCount)
     return pageNumbersInfo;
   } catch(e) {
     console.error(e);

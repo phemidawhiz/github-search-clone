@@ -187,7 +187,7 @@ const Dashboard: React.SFC<{}> = () => {
                   </span> 
                   <small>
                     { 
-                      isUsersClicked ? getPageNumbers(usersInfo && usersInfo?.userCount) : getPageNumbers(reposInfo && reposInfo?.userCount) 
+                      isUsersClicked ? getPageNumbers(reposInfo && reposInfo?.userCount) : getPageNumbers(usersInfo && usersInfo?.userCount)
                     }
                   </small> 
                   <span
