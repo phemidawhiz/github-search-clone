@@ -54,7 +54,7 @@ const Home: NextPage<{}> = (): JSX.Element => {
 
   return (
     <div className={styles.home}>
-      <GitSearchButton href={`https://github.com/login/oauth/authorize?scope=user&client_id=${config.github_app_client_ic}`} > Login to Github </GitSearchButton>
+      <GitSearchButton loading={data.isLoading} disabled={data.isLoading} href={`https://github.com/login/oauth/authorize?scope=user&client_id=${config.github_app_client_ic}`} > Login to Github </GitSearchButton>
     </div>
   );
 };
