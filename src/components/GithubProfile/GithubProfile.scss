@@ -8,7 +8,8 @@
     display: inline-block;
     border-radius: 50%;
     cursor: pointer;
-    margin-right: 10px;
+    margin-left: 70px;
+    float: left;
   }
 
   span, h6 {
@@ -18,9 +19,10 @@
   }
 
   h6 {
-    margin-top: 0;
+    margin-top: 18px;
+    float: left;
+    margin-left: 15px;
   }
-
 }
 
 .downArrow {
@@ -35,10 +37,16 @@
   border: 1px solid rgba(196, 203, 214, 0.3);
   width: 120px;
   margin-left: 100px;
+  margin-top: 80px;
   display: none;
   background-color: $color-white;
+  &:hover {
+    color: $color-orange;
+    font-weight: bold;
+  }
 }
 
 .clickedState {
   display: block !important;
+  margin-top: 0px;
 }

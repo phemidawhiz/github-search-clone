@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import { Input } from 'components/GitSearchInput/GitSearchInput';
 import githublogo from 'assets/images/githublogo.png';
@@ -7,10 +7,8 @@ import GitSearchButton from 'components/GitSearchButton/GitSearchButton';
 import Header from 'components/Header/Header';
 import GithubStats from 'components/GithubStats/GithubStats';
 import { ResultItem, UserItem } from 'components/ResultItem/ResultItem';
-import { AuthContext } from 'contexts/auth';
 import { IAuthInfo } from 'types/user';
 import Router from 'next/router';
-import config from 'config';
 import { viewLoggedInUser, getRepositories, getUsers } from 'services/github.service';
 import { ISearchResultRepos, ISearchResultUserS } from 'types/interfaces';
 

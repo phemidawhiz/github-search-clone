@@ -28,7 +28,7 @@ const GithubProfile: React.SFC<IProfile> = ({
    <div className={styles.wrapper}>
       <img src={imagePath} onClick={ () => changedClickedState() } alt={username} /> 
       <h6 onClick={ () => changedClickedState() }>{username}</h6>
-      {/* <span><img className={styles.downArrow} src={downArrow} /></span> */}
+      {/* <span><img className={styles.downArrow} src={downArrow} /></span> */}<br /><br /><br />
       <p className={ clickedState ? composeClasses(styles.logout, styles.clickedState) : styles.logout} onClick={ () => handleLogout()} >Logout</p>
     </div>
   );
