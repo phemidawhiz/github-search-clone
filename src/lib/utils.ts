@@ -3,6 +3,14 @@ import format from 'date-fns/format';
 import { ISearchResultReposInfo, ISearchResultUsersInfo } from 'types/interfaces';
 import { IAuthInfo } from 'types/user';
 
+export const makeCountCommaSeperated = (num: string | number) => {
+  const p = parseFloat(String(num)).toFixed(2).split('.');
+  const formattedCount = `${p[0].split('').reverse().reduce((acc, num, i) => {
+    return num === '-' ? acc : num + (i && !(i % 3) ? ',' : '') + acc;
+  }, '')}.${p[1]}`;
+  return formattedCount;
+};
+
 export const formatCount = (resultCount: number | undefined): string => {
   if((resultCount) && (resultCount > 1000 && resultCount < 1000000)) {
     return `${(Math.floor(resultCount) / 1000).toFixed(2)}K`;
@@ -38,30 +46,6 @@ export const getAuthToken = (): string | null => {
       }
 
       return null;
-  } catch (e) {
-      console.error(e.message);
-      return null;
-  }
-};
-
-// get repositories from localStorage 
-export const getReposFromLocalStorage = (): ISearchResultReposInfo | null | undefined => {
-  try { 
-      const repos = JSON.parse(localStorage?.getItem("repos") as string) as ISearchResultReposInfo;
-
-      return repos;
-  } catch (e) {
-      console.error(e.message);
-      return null;
-  }
-};
-
-// get users from localStorage 
-export const getUsersFromLocalStorage = (): ISearchResultUsersInfo | null | undefined => {
-  try { 
-      const users = JSON.parse(localStorage?.getItem("users") as string) as ISearchResultUsersInfo;
-
-      return users;
   } catch (e) {
       console.error(e.message);
       return null;

@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { NextPage } from 'next';
 import { Input } from 'components/GitSearchInput/GitSearchInput';
 import githublogo from 'assets/images/githublogo.png';
 import styles from './dashboard.scss';
+import statStyles from '../../components/GithubStats/GithubStats.scss';
 import GitSearchButton from 'components/GitSearchButton/GitSearchButton';
 import Header from 'components/Header/Header';
-import GithubStats from 'components/GithubStats/GithubStats';
 import { ResultItem, UserItem } from 'components/ResultItem/ResultItem';
-import { IAuthInfo } from 'types/user';
 import Router from 'next/router';
 import { viewLoggedInUser, getRepositories, getUsers } from 'services/github.service';
 import { ISearchResultReposInfo, ISearchResultUsersInfo } from 'types/interfaces';
+import { formatCount, makeCountCommaSeperated } from 'lib/utils';
 
 const Dashboard: React.SFC<{}> = () => {
 
   const [fetchingResults, setFetchingResults] = useState(false);
   const [fetchedResults, setFetchedResults] = useState(false);
   const [username, setUsername] = useState('' as string);
+  const [isUsersClicked, setIsUsersClicked] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState('' as string);
   const [searchParam, setSearchParam] = useState('' as string);
   const [inputErrorMessage, setInputErrorMessage] = useState('' as string);
@@ -102,35 +102,40 @@ const Dashboard: React.SFC<{}> = () => {
           <Header username={username} handleSearch={handleSearch} avatarUrl={avatarUrl} state={fetchedResults} />
           <div className={styles.results}>
             <div>
-              <GithubStats repositories={reposInfo && reposInfo?.repositoryCount} users={usersInfo && usersInfo.userCount} />
+              <div className={statStyles.wrapper}>
+                <div className={ !isUsersClicked ? statStyles.fetched : ''} onClick={ () => setIsUsersClicked(false) }>
+                  <p>Repositories <span>{formatCount(reposInfo && reposInfo?.repositoryCount)}</span></p>
+                </div>
+                <div className={ isUsersClicked ? statStyles.fetched : ''} onClick={ () => setIsUsersClicked(true) }>
+                  <p>Users <span>{formatCount(usersInfo && usersInfo?.userCount)}</span></p>
+                </div>
+              </div>
             </div>
             <div>
-              <h2>{reposInfo && reposInfo?.repositoryCount} repository result</h2>
+              <h2>{ isUsersClicked ? `${makeCountCommaSeperated(usersInfo && usersInfo?.userCount)} users results` : `${makeCountCommaSeperated(reposInfo && reposInfo?.repositoryCount)} repositories results`}</h2>
               {
-                reposInfo?.edges.map( (item: any) => (
-                  <div className={styles.resultItem}>
-                    <ResultItem title={item && item?.node?.name} description={item && item?.node?.description} stars={item && item?.node?.stargazers?.totalCount} license={item && item?.node?.licenseInfo?.name} updatedTime={item && item?.node?.updateAt} />
-                  </div>
+                isUsersClicked ? (
+                  usersInfo?.edges.map( (item: any) => (
+                      <div className={styles.resultItem}>
+                        <UserItem name={item && item?.node?.name} otherInfo={item && item?.node?.bio} about={item && item?.node?.email} />
+                      </div>
+                    )
                   )
-                )
-              }
-              
-              {
-                usersInfo?.edges.map( (item: any) => (
+                ) : (
+                  reposInfo?.edges.map( (item: any) => (
                     <div className={styles.resultItem}>
-                      <UserItem name={item && item?.node?.name} otherInfo={item && item?.node?.bio} about={item && item?.node?.email} />
+                      <ResultItem title={item && item?.node?.name} description={item && item?.node?.description} stars={item && item?.node?.stargazers?.totalCount} license={item && item?.node?.licenseInfo?.name} updatedTime={item && item?.node?.updateAt} />
                     </div>
+                    )
                   )
                 )
               }
             </div>
           </div>
         </>
-        
       )
     }
     </>
-
   );
 };
 

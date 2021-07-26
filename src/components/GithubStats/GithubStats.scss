@@ -2,19 +2,16 @@
 @import "extends";
 
 .wrapper {
-  width: 280px;
+  width: 270px;
   @extend %resultWrapper;
   height: 120px !important;
-  padding: 20px 10px !important;
+  padding: 20px 20px !important;
   div {
     p {
       margin: 7px 30px ;
-      padding: 15px;
+      padding: 15px 5px;
       cursor: pointer;
       @include fontDetails('Open Sans', 18px, $font-color, 17px, normal);
-      &:hover {
-        background-color: $background-grey;
-      }
     }
     span {
       text-align: right;

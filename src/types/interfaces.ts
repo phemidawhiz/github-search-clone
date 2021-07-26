@@ -19,10 +19,6 @@ export interface ISearchResultRepoNode {
   stargazers: IStars;
 }
 
-export interface IRepoArrayNode {
-  node: ISearchResultRepoNode;
-}
-
 export interface ISearchResultReposInfo {
   userCount: number;
   repositoryCount: number;
