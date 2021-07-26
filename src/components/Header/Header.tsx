@@ -9,7 +9,8 @@ import { Input } from 'components/GitSearchInput/GitSearchInput';
 const Header: React.SFC<IHeaderProps> = ({
   username,
   avatarUrl,
-  state
+  state,
+  handleSearch
 }) => {
   
   return (
@@ -27,7 +28,11 @@ const Header: React.SFC<IHeaderProps> = ({
       <div>
         {
             state ? (
-              <Input isInHeader={true} />
+              <Input isInHeader={true} onKeyDown={ (e) => {
+                if(e.keyCode === 13) {
+                  handleSearch
+                }
+              }} />
             ) : (
               ''
             )

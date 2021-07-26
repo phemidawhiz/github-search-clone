@@ -1,5 +1,6 @@
 
 import format from 'date-fns/format';
+import { ISearchResultReposInfo, ISearchResultUsersInfo } from 'types/interfaces';
 import { IAuthInfo } from 'types/user';
 /**
  * @description Format date and time input
@@ -26,6 +27,30 @@ export const getAuthToken = (): string | null => {
       }
 
       return null;
+  } catch (e) {
+      console.error(e.message);
+      return null;
+  }
+};
+
+// get repositories from localStorage 
+export const getReposFromLocalStorage = (): ISearchResultReposInfo | null | undefined => {
+  try { 
+      const repos = JSON.parse(localStorage?.getItem("repos") as string) as ISearchResultReposInfo;
+
+      return repos;
+  } catch (e) {
+      console.error(e.message);
+      return null;
+  }
+};
+
+// get users from localStorage 
+export const getUsersFromLocalStorage = (): ISearchResultUsersInfo | null | undefined => {
+  try { 
+      const users = JSON.parse(localStorage?.getItem("users") as string) as ISearchResultUsersInfo;
+
+      return users;
   } catch (e) {
       console.error(e.message);
       return null;

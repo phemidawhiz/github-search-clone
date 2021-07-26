@@ -19,13 +19,13 @@ export interface ISearchResultRepoNode {
   stargazers: IStars;
 }
 
-export interface ISearchResultRepos {
+export interface ISearchResultReposInfo {
   userCount: number;
   repositoryCount: number;
   edges: Array<ISearchResultRepoNode>;
 }
 
-export interface ISearchResultUserS {
+export interface ISearchResultUsersInfo {
   userCount: number;
   repositoryCount: number;
   edges: Array<IUserInfo>;
@@ -38,14 +38,15 @@ export interface IProfile {
 }
 
 export interface IStats {
-  repositories: number;
-  users: number;
+  repositories: number | undefined;
+  users: number | undefined;
 }
 
 export interface IHeaderProps {
   username: string;
   state?: boolean;
   avatarUrl: string;
+  handleSearch?: Function;
 }
 
 export interface IRepoInfo {
@@ -54,7 +55,6 @@ export interface IRepoInfo {
   stars: number;
   license: string;
   updatedTime: string;
-  language: string;
 }
 
 export interface IUser {

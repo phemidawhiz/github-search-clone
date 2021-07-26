@@ -9,13 +9,12 @@ export const ResultItem: React.SFC<IRepoInfo> = ({
   license,
   description,
   stars,
-  updatedTime,
-  language
+  updatedTime
 }) => (
   <div className={styles.wrapper}>
     <h4>{title}</h4>
     <p>{description}</p>
-    <p>{`${stars} stars | ${language} | ${license} | ${updatedTime}`}</p>
+    <p>{`${stars} stars | ${license} | ${updatedTime}`}</p>
   </div>
 );
 

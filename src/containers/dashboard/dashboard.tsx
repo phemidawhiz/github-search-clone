@@ -10,7 +10,8 @@ import { ResultItem, UserItem } from 'components/ResultItem/ResultItem';
 import { IAuthInfo } from 'types/user';
 import Router from 'next/router';
 import { viewLoggedInUser, getRepositories, getUsers } from 'services/github.service';
-import { ISearchResultRepos, ISearchResultUserS } from 'types/interfaces';
+import { getReposFromLocalStorage, getUsersFromLocalStorage } from 'lib/utils';
+import { ISearchResultRepoNode } from 'types/interfaces';
 
 const Dashboard: NextPage<{}> = (): JSX.Element => {
 
@@ -20,8 +21,17 @@ const Dashboard: NextPage<{}> = (): JSX.Element => {
   const [avatarUrl, setAvatarUrl] = useState('' as string);
   const [searchParam, setSearchParam] = useState('' as string);
   const [inputErrorMessage, setInputErrorMessage] = useState('' as string);
-  const [reposInfo, setReposInfo] = useState(null as unknown as ISearchResultRepos);
-  const [usersInfo, setUsersInfo] = useState(null as unknown as ISearchResultUserS);
+
+  const handleSearch = () => {
+    if(searchParam !== "") {
+      setInputErrorMessage("");
+      setFetchingResults(true);
+      fetchUsers(searchParam, 100);
+      fetchRepositories(searchParam, 100);
+    } else {
+      setInputErrorMessage("please enter a search term");
+    }
+  }
 
   const getUserName = () => {
     viewLoggedInUser().then((resp: any) => {
@@ -36,8 +46,8 @@ const Dashboard: NextPage<{}> = (): JSX.Element => {
   const fetchRepositories = (param: string, limit: number) => {
     getRepositories(`${param}` as string, limit).then((resp: any) => {
       if(resp && resp?.response && resp?.response?.search) {
-        setReposInfo(resp && resp?.response && resp?.response?.search);
         console.log("repos: ", resp?.response?.search);
+        localStorage.setItem("repos", JSON.stringify(resp?.response?.search));
       }
       
     }).catch((err) => {
@@ -50,8 +60,8 @@ const Dashboard: NextPage<{}> = (): JSX.Element => {
     setFetchedResults(true);
     getUsers(`${param}` as string, limit).then((resp: any) => {
       if(resp && resp?.response && resp?.response?.search) {
-        setUsersInfo(resp && resp?.response && resp?.response?.search);
         console.log("users: ", resp?.response?.search);
+        localStorage.setItem("users", JSON.stringify(resp?.response?.search));
       }
       
     }).catch((err) => {
@@ -89,37 +99,28 @@ const Dashboard: NextPage<{}> = (): JSX.Element => {
               <GitSearchButton
               disabled={fetchedResults}
               loading={fetchingResults}
-              onClick={ () => {
-                if(searchParam !== "") {
-                  setInputErrorMessage("");
-                  setFetchingResults(true);
-                  fetchUsers(searchParam, 100);
-                  fetchRepositories(searchParam, 100);
-                } else {
-                  setInputErrorMessage("please enter a search term");
-                }
-                
-              }} >Search Github</GitSearchButton>
+              onClick={ () => handleSearch() } >Search Github</GitSearchButton>
             </div>
           </div>
         </>
       ) : (
         <>
-          <Header username={username} avatarUrl={avatarUrl} state={fetchedResults} />
+          <Header username={username} handleSearch={handleSearch} avatarUrl={avatarUrl} state={fetchedResults} />
           <div className={styles.results}>
             <div>
-              <GithubStats repositories={2310} users={34} />
+              <GithubStats repositories={getReposFromLocalStorage()?.repositoryCount} users={getUsersFromLocalStorage()?.userCount} />
             </div>
             <div>
               <h2>2,985 repository results</h2>
-              <div className={styles.resultItem}>
-                <ResultItem title={`Goselfie`} description={`Selfie Contest Angular App`} stars={412} license={`MIT License`} language={`Java`} updatedTime={`Updated 4 hours agos`} />
-              </div>
+              {
+                getReposFromLocalStorage()?.edges?.map( (item: ISearchResultRepoNode) => (
+                  <div className={styles.resultItem}>
+                    <ResultItem title={item && item?.name} description={item && item?.description} stars={item && item?.stargazers?.totalCount} license={item && item?.licenseInfo?.name} updatedTime={item && item?.updateAt} />
+                  </div>
+                  )
+                )
+              }
               
-              <div className={styles.resultItem}>
-                <ResultItem title={`Github Search`} description={`Git Hub Search Clone`} stars={319} license={`GNU License`} language={`Typescript`} updatedTime={`Updated 5 hours agos`} />
-              </div>
-
               <div className={styles.resultItem}>
                 <UserItem name={`Ayodele Olufemi`} otherInfo={`just some other info`} about={`A cool coder`} />
               </div>
