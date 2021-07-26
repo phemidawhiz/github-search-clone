@@ -15,16 +15,21 @@ export const makeCountCommaSeperated = (num: string | number) => {
 export const getPageNumbers = (resultCount: number): string => {
   let pageNumbersInfo: string = '';
   const pages: number = resultCount/RECORDS_PER_PAGE;
+  try {
+    for(let i=1; i<pages; i++) {
+      pageNumbersInfo = pageNumbersInfo + '  ' + (String(i))
+    }
   
-  for(let i=1; i<pages; i++) {
-    pageNumbersInfo = pageNumbersInfo + '  ' + (String(i))
+    if(pages > 6) {
+      return pageNumbersInfo + ' ... ' + formatCount(pages);
+    }
+    console.log("pageNumbersInfo: ", resultCount)
+    return pageNumbersInfo;
+  } catch(e) {
+    console.error(e);
+    return "";
   }
-
-  if(pages > 6) {
-    return pageNumbersInfo + ' ... ' + formatCount(pages);
-  }
-  console.log("pageNumbersInfo: ", pages)
-  return pageNumbersInfo;
+  
 }
 
 export const makeTextShorter = (param: string | null | undefined): string | null | undefined => {

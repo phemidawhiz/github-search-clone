@@ -32,7 +32,6 @@ const Dashboard: React.SFC<{}> = () => {
     } else {
       fetchRepositories(searchParam, RECORDS_PER_PAGE, endCursor, endCursor);
     }
-    
   }
 
   //search function
