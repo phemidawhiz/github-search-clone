@@ -10,6 +10,6 @@ Application code Github Search Clone
 
 - Login to github
 
-- navigate to localhost:3000 and click the button to get started
+- navigate to localhost:3000 and click the login button to get started
 
 
