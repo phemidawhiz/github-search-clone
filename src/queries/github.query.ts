@@ -8,8 +8,8 @@ export const viewUser = `
 `;
 
 export const users = `
-  query SearchUser($searchParam: String!, $limit: Int!, $endCursor: String) {
-    search(query: $searchParam, type: USER, first: $limit, after: $endCursor) {
+  query SearchUser($searchParam: String!, $limit: Int!, $endCursor: String, $startCursor: String) {
+    search(query: $searchParam, type: USER, first: $limit, after: $endCursor, before: $startCursor) {
       repositoryCount
       userCount
       edges {
@@ -25,14 +25,16 @@ export const users = `
       pageInfo {
         hasNextPage
         endCursor
+        hasPreviousPage
+        startCursor
       }
     }
   }
 `
 
 export const repos =  `
-query SearchRepo($searchParam: String!, $limit: Int!, $endCursor: String) {
-  search(query: $searchParam, type: REPOSITORY, first: $limit, after: $endCursor) {
+query SearchRepo($searchParam: String!, $limit: Int!, $endCursor: String, $startCursor: String) {
+  search(query: $searchParam, type: REPOSITORY, first: $limit, after: $endCursor, before: $startCursor) {
     userCount
     repositoryCount
     edges {
@@ -53,6 +55,8 @@ query SearchRepo($searchParam: String!, $limit: Int!, $endCursor: String) {
     pageInfo {
       hasNextPage
       endCursor
+      hasPreviousPage
+      startCursor
     }
   }
 }

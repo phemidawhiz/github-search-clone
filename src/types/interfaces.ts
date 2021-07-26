@@ -9,6 +9,8 @@ interface IStars {
 export interface IPageInfo {
     hasNextPage: true;
     endCursor: string;
+    hasPreviousPage: string;
+    startCursor: string;
 }
 
 export interface IUserInfo {

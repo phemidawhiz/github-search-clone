@@ -1,4 +1,5 @@
 
+import { TEXT_LENGTH, RECORDS_PER_PAGE } from 'config/constants';
 import format from 'date-fns/format';
 import { IAuthInfo } from 'types/user';
 
@@ -10,6 +11,37 @@ export const makeCountCommaSeperated = (num: string | number) => {
   }, '')}.${p[1]}`;
   return formattedCount;
 };
+
+export const getPageNumbers = (resultCount: number): string => {
+  let pageNumbersInfo: string = '';
+  const pages: number = resultCount/RECORDS_PER_PAGE;
+  
+  for(let i=1; i<pages; i++) {
+    pageNumbersInfo = pageNumbersInfo + '  ' + (String(i))
+  }
+
+  if(pages > 6) {
+    return pageNumbersInfo + ' ... ' + formatCount(pages);
+  }
+  console.log("pageNumbersInfo: ", pages)
+  return pageNumbersInfo;
+}
+
+export const makeTextShorter = (param: string | null | undefined): string | null | undefined => {
+  try {
+    
+    if (param !== null) {
+      if(param && param?.length < TEXT_LENGTH) 
+        return `${param?.substr(param?.length)}`
+      return `${param?.substr(TEXT_LENGTH)}...`;
+    }
+
+    return null;
+  } catch (e) {
+      console.error(e.message);
+      return null;
+  }
+}
 
 //add K and M for counts above 1000 to prevent long numbers
 export const formatCount = (resultCount: number | undefined): string => {
