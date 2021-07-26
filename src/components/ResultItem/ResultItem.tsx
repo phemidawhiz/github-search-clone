@@ -12,9 +12,9 @@ export const ResultItem: React.SFC<IRepoInfo> = ({
   updatedTime
 }) => (
   <div className={styles.wrapper}>
-    <h4>{title}</h4>
-    <p>{description}</p>
-    <p>{`${stars} stars | ${license} | ${updatedTime}`}</p>
+    <h4>{title || 'N/A'}</h4>
+    <p>{description || 'N/A'}</p>
+    <p>{`${stars  || 'N/A'} stars | ${license  || 'N/A'} | ${updatedTime || 'N/A'}`}</p>
   </div>
 );
 
@@ -24,7 +24,7 @@ export const UserItem: React.SFC<IUser> = ({
   otherInfo
 }) => (
   <div className={composeClasses(styles.wrapper, styles.reducedHeight)}>
-    <h4>{name} <span>{about}</span></h4>
-    <p>{otherInfo}</p>
+    <h4>{name  || 'N/A'} <span>{about  || 'N/A'}</span></h4>
+    <p>{otherInfo  || 'N/A'}</p>
   </div>
 );

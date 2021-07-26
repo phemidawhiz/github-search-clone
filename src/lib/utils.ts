@@ -2,6 +2,17 @@
 import format from 'date-fns/format';
 import { ISearchResultReposInfo, ISearchResultUsersInfo } from 'types/interfaces';
 import { IAuthInfo } from 'types/user';
+
+export const formatCount = (resultCount: number | undefined): string => {
+  if((resultCount) && (resultCount > 1000 && resultCount < 1000000)) {
+    return `${(Math.floor(resultCount) / 1000).toFixed(2)}K`;
+  } else if((resultCount) && resultCount > 1000000) {
+    return `${(Math.floor(resultCount) / 1000000).toFixed(2)}M`;
+  }
+
+  return `${resultCount}`;
+}
+
 /**
  * @description Format date and time input
  * @param datetime

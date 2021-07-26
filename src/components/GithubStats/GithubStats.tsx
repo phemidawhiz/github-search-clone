@@ -1,3 +1,4 @@
+import { formatCount } from 'lib/utils';
 import React from 'react';
 import { IStats } from 'types/interfaces';
 
@@ -9,12 +10,14 @@ const GithubStats: React.SFC<IStats> = ({
 }) => (
   <div className={styles.wrapper}>
     <div>
-      <p>Repositories <span>{repositories}</span></p>
+      <p>Repositories <span>{formatCount(repositories)}</span></p>
     </div>
     <div>
-      <p>Users <span>{users}</span></p>
+      <p>Users <span>{formatCount(users)}</span></p>
     </div>
   </div>
 );
 
 export default GithubStats;
+
+

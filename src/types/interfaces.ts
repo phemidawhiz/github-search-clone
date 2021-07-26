@@ -6,7 +6,7 @@ interface IStars {
   totalCount: number
 }
 
-interface IUserInfo {
+export interface IUserInfo {
   bio: string;
   name: string;
 }
@@ -17,6 +17,10 @@ export interface ISearchResultRepoNode {
   updateAt: string;
   licenseInfo: ILicenseInfo;
   stargazers: IStars;
+}
+
+export interface IRepoArrayNode {
+  node: ISearchResultRepoNode;
 }
 
 export interface ISearchResultReposInfo {

@@ -10,10 +10,9 @@ import { ResultItem, UserItem } from 'components/ResultItem/ResultItem';
 import { IAuthInfo } from 'types/user';
 import Router from 'next/router';
 import { viewLoggedInUser, getRepositories, getUsers } from 'services/github.service';
-import { getReposFromLocalStorage, getUsersFromLocalStorage } from 'lib/utils';
-import { ISearchResultRepoNode } from 'types/interfaces';
+import { ISearchResultReposInfo, ISearchResultUsersInfo } from 'types/interfaces';
 
-const Dashboard: NextPage<{}> = (): JSX.Element => {
+const Dashboard: React.SFC<{}> = () => {
 
   const [fetchingResults, setFetchingResults] = useState(false);
   const [fetchedResults, setFetchedResults] = useState(false);
@@ -21,13 +20,15 @@ const Dashboard: NextPage<{}> = (): JSX.Element => {
   const [avatarUrl, setAvatarUrl] = useState('' as string);
   const [searchParam, setSearchParam] = useState('' as string);
   const [inputErrorMessage, setInputErrorMessage] = useState('' as string);
+  const [reposInfo, setReposInfo] = useState(null as unknown as ISearchResultReposInfo);
+  const [usersInfo, setUsersInfo] = useState(null as unknown as ISearchResultUsersInfo);
 
   const handleSearch = () => {
     if(searchParam !== "") {
       setInputErrorMessage("");
       setFetchingResults(true);
-      fetchUsers(searchParam, 100);
-      fetchRepositories(searchParam, 100);
+      fetchUsers(searchParam, 10);
+      fetchRepositories(searchParam, 10);
     } else {
       setInputErrorMessage("please enter a search term");
     }
@@ -38,21 +39,18 @@ const Dashboard: NextPage<{}> = (): JSX.Element => {
       setUsername(resp && resp?.response && resp?.response?.viewer && resp?.response?.viewer?.name);
       setAvatarUrl(resp && resp?.response && resp?.response?.viewer && resp?.response?.viewer?.avatarUrl);
     }).catch((err) => {
-      const errorMessage = err && err.response && err.response.errors[0].message;
-      console.log("error: ", errorMessage)
+      console.error("error: ", err)
     });
   }
 
   const fetchRepositories = (param: string, limit: number) => {
     getRepositories(`${param}` as string, limit).then((resp: any) => {
       if(resp && resp?.response && resp?.response?.search) {
-        console.log("repos: ", resp?.response?.search);
-        localStorage.setItem("repos", JSON.stringify(resp?.response?.search));
+        setReposInfo(resp?.response?.search);
       }
       
     }).catch((err) => {
-      const errorMessage = err && err.response && err.response.errors[0].message;
-      console.log("error: ", errorMessage)
+      console.error("error: ", err)
     });
   }
 
@@ -60,18 +58,14 @@ const Dashboard: NextPage<{}> = (): JSX.Element => {
     setFetchedResults(true);
     getUsers(`${param}` as string, limit).then((resp: any) => {
       if(resp && resp?.response && resp?.response?.search) {
-        console.log("users: ", resp?.response?.search);
-        localStorage.setItem("users", JSON.stringify(resp?.response?.search));
+        setUsersInfo(resp?.response?.search);
       }
-      
     }).catch((err) => {
-      const errorMessage = err && err.response && err.response.errors[0].message;
-      console.log("error: ", errorMessage)
+      console.error("error: ", err)
     });
   }
 
   useEffect(() => {
-    const userInfo: IAuthInfo = JSON.parse(localStorage.getItem("user") as string) as IAuthInfo;
     const loggedInState: boolean = JSON.parse(localStorage.getItem("isLoggedIn") as string) as boolean;
 
     getUserName();
@@ -108,22 +102,27 @@ const Dashboard: NextPage<{}> = (): JSX.Element => {
           <Header username={username} handleSearch={handleSearch} avatarUrl={avatarUrl} state={fetchedResults} />
           <div className={styles.results}>
             <div>
-              <GithubStats repositories={getReposFromLocalStorage()?.repositoryCount} users={getUsersFromLocalStorage()?.userCount} />
+              <GithubStats repositories={reposInfo && reposInfo?.repositoryCount} users={usersInfo && usersInfo.userCount} />
             </div>
             <div>
-              <h2>2,985 repository results</h2>
+              <h2>{reposInfo && reposInfo?.repositoryCount} repository result</h2>
               {
-                getReposFromLocalStorage()?.edges?.map( (item: ISearchResultRepoNode) => (
+                reposInfo?.edges.map( (item: any) => (
                   <div className={styles.resultItem}>
-                    <ResultItem title={item && item?.name} description={item && item?.description} stars={item && item?.stargazers?.totalCount} license={item && item?.licenseInfo?.name} updatedTime={item && item?.updateAt} />
+                    <ResultItem title={item && item?.node?.name} description={item && item?.node?.description} stars={item && item?.node?.stargazers?.totalCount} license={item && item?.node?.licenseInfo?.name} updatedTime={item && item?.node?.updateAt} />
                   </div>
                   )
                 )
               }
               
-              <div className={styles.resultItem}>
-                <UserItem name={`Ayodele Olufemi`} otherInfo={`just some other info`} about={`A cool coder`} />
-              </div>
+              {
+                usersInfo?.edges.map( (item: any) => (
+                    <div className={styles.resultItem}>
+                      <UserItem name={item && item?.node?.name} otherInfo={item && item?.node?.bio} about={item && item?.node?.email} />
+                    </div>
+                  )
+                )
+              }
             </div>
           </div>
         </>
@@ -131,9 +130,6 @@ const Dashboard: NextPage<{}> = (): JSX.Element => {
       )
     }
     </>
-    
-      
-    
 
   );
 };
