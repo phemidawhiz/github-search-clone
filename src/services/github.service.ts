@@ -2,9 +2,22 @@ import { viewUser, repos, users } from './../queries/github.query';
 import { createGQLClient } from 'lib/graphql';
 import { IAuthInfo } from 'types/user';
 
-const userInfo: IAuthInfo = JSON.parse(localStorage && localStorage?.getItem("user") as string) as IAuthInfo;
+const getAuthTokens = (): string | null => {
+  try {
+      // The problem was here
+      const userData = JSON.parse(localStorage?.getItem("user") as string) as IAuthInfo;
+      if (userData.access_token !== null) {
+          return userData.access_token;
+      }
 
-const client = createGQLClient(userInfo.access_token);
+      return null;
+  } catch (e) {
+      console.log(e.message);
+      return null;
+  }
+};
+
+const client = createGQLClient(getAuthTokens());
 
 export const viewLoggedInUser = async () =>{
   const query = viewUser;

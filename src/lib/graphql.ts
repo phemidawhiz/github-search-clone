@@ -1,7 +1,7 @@
 import { GraphQLClient } from 'graphql-request';
 import config from '../config';
 
-export const createGQLClient = (token: string): GraphQLClient => {
+export const createGQLClient = (token: string | null): GraphQLClient => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   
 

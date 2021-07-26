@@ -37,7 +37,7 @@ const Dashboard: NextPage<{}> = (): JSX.Element => {
     getRepositories(`${param}` as string, limit).then((resp: any) => {
       if(resp && resp?.response && resp?.response?.search) {
         setReposInfo(resp && resp?.response && resp?.response?.search);
-        console.log("repos: ", reposInfo);
+        console.log("repos: ", resp?.response?.search);
       }
       
     }).catch((err) => {
@@ -51,7 +51,7 @@ const Dashboard: NextPage<{}> = (): JSX.Element => {
     getUsers(`${param}` as string, limit).then((resp: any) => {
       if(resp && resp?.response && resp?.response?.search) {
         setUsersInfo(resp && resp?.response && resp?.response?.search);
-        console.log("users: ", usersInfo);
+        console.log("users: ", resp?.response?.search);
       }
       
     }).catch((err) => {
@@ -90,7 +90,6 @@ const Dashboard: NextPage<{}> = (): JSX.Element => {
               disabled={fetchedResults}
               loading={fetchingResults}
               onClick={ () => {
-                console.log("searchParam", searchParam);
                 if(searchParam !== "") {
                   setInputErrorMessage("");
                   setFetchingResults(true);
