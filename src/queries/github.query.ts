@@ -8,8 +8,8 @@ export const viewUser = `
 `;
 
 export const users = `
-  query SearchUser($searchParam: String!, $limit: Int!) {
-    search(query: $searchParam, type: USER, first: $limit) {
+  query SearchUser($searchParam: String!, $limit: Int!, $endCursor: String) {
+    search(query: $searchParam, type: USER, first: $limit, after: $endCursor) {
       repositoryCount
       userCount
       edges {
@@ -22,13 +22,17 @@ export const users = `
           }
         }
       }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
     }
   }
 `
 
 export const repos =  `
-query SearchRepo($searchParam: String!, $limit: Int!) {
-  search(query: $searchParam, type: REPOSITORY, first: $limit) {
+query SearchRepo($searchParam: String!, $limit: Int!, $endCursor: String) {
+  search(query: $searchParam, type: REPOSITORY, first: $limit, after: $endCursor) {
     userCount
     repositoryCount
     edges {
@@ -45,6 +49,10 @@ query SearchRepo($searchParam: String!, $limit: Int!) {
           }
         }
       }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
     }
   }
 }

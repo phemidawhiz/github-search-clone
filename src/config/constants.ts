@@ -1,2 +1,2 @@
 
-export const perPage = 10; // 10 records per page
+export const RECORDS_PER_PAGE = 10; // 10 records per page

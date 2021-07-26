@@ -1,8 +1,8 @@
 
 import format from 'date-fns/format';
-import { ISearchResultReposInfo, ISearchResultUsersInfo } from 'types/interfaces';
 import { IAuthInfo } from 'types/user';
 
+//comma separation of search result count
 export const makeCountCommaSeperated = (num: string | number) => {
   const p = parseFloat(String(num)).toFixed(2).split('.');
   const formattedCount = `${p[0].split('').reverse().reduce((acc, num, i) => {
@@ -11,6 +11,7 @@ export const makeCountCommaSeperated = (num: string | number) => {
   return formattedCount;
 };
 
+//add K and M for counts above 1000 to prevent long numbers
 export const formatCount = (resultCount: number | undefined): string => {
   if((resultCount) && (resultCount > 1000 && resultCount < 1000000)) {
     return `${(Math.floor(resultCount) / 1000).toFixed(2)}K`;

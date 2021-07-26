@@ -28,7 +28,7 @@ const Header: React.SFC<IHeaderProps> = ({
       <div>
         {
             state ? (
-              <Input isInHeader={true} onKeyDown={ (e) => {
+              <Input isInHeader={true} placeholder={`Search`} onKeyDown={ (e) => {
                 if(e.keyCode === 13) {
                   handleSearch
                 }

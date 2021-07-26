@@ -20,11 +20,12 @@ export const viewLoggedInUser = async () =>{
   return response;
 }
 
-export const getRepositories = async (param: string, limit: number) => { 
+export const getRepositories = async (param: string, limit: number, endCursor: string | null) => { 
 
   const response = await client.request(repos, {
     searchParam: param,
-    limit: limit
+    limit: limit,
+    endCursor: endCursor
   })
   .then((data) => {
     return {
@@ -38,11 +39,12 @@ export const getRepositories = async (param: string, limit: number) => {
   return response;
 }
 
-export const getUsers = async (param: string, limit: number) => { 
+export const getUsers = async (param: string, limit: number, endCursor: string | null) => { 
 
   const response = await client.request(users, {
     searchParam: param,
-    limit: limit
+    limit: limit,
+    endCursor: endCursor
   })
   .then((data) => {
     return {

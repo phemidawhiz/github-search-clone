@@ -10,30 +10,34 @@ import Router from 'next/router';
 import { viewLoggedInUser, getRepositories, getUsers } from 'services/github.service';
 import { ISearchResultReposInfo, ISearchResultUsersInfo } from 'types/interfaces';
 import { formatCount, makeCountCommaSeperated } from 'lib/utils';
+import { RECORDS_PER_PAGE } from 'config/constants';
 
 const Dashboard: React.SFC<{}> = () => {
 
+  // states
   const [fetchingResults, setFetchingResults] = useState(false);
   const [fetchedResults, setFetchedResults] = useState(false);
   const [username, setUsername] = useState('' as string);
-  const [isUsersClicked, setIsUsersClicked] = useState(false);
+  const [isUsersClicked, setIsUsersClicked] = useState(false); //check whether repo or user link is clicked
   const [avatarUrl, setAvatarUrl] = useState('' as string);
   const [searchParam, setSearchParam] = useState('' as string);
   const [inputErrorMessage, setInputErrorMessage] = useState('' as string);
   const [reposInfo, setReposInfo] = useState(null as unknown as ISearchResultReposInfo);
   const [usersInfo, setUsersInfo] = useState(null as unknown as ISearchResultUsersInfo);
 
+  //search function
   const handleSearch = () => {
     if(searchParam !== "") {
       setInputErrorMessage("");
       setFetchingResults(true);
-      fetchUsers(searchParam, 10);
-      fetchRepositories(searchParam, 10);
+      fetchUsers(searchParam, RECORDS_PER_PAGE, null);
+      fetchRepositories(searchParam, RECORDS_PER_PAGE, null);
     } else {
       setInputErrorMessage("please enter a search term");
     }
   }
 
+  // get loggedIn user info from github
   const getUserName = () => {
     viewLoggedInUser().then((resp: any) => {
       setUsername(resp && resp?.response && resp?.response?.viewer && resp?.response?.viewer?.name);
@@ -43,8 +47,9 @@ const Dashboard: React.SFC<{}> = () => {
     });
   }
 
-  const fetchRepositories = (param: string, limit: number) => {
-    getRepositories(`${param}` as string, limit).then((resp: any) => {
+  // get list of repositories with count
+  const fetchRepositories = (param: string, limit: number, endCursor: string | null) => {
+    getRepositories(`${param}` as string, limit, endCursor).then((resp: any) => {
       if(resp && resp?.response && resp?.response?.search) {
         setReposInfo(resp?.response?.search);
       }
@@ -54,9 +59,10 @@ const Dashboard: React.SFC<{}> = () => {
     });
   }
 
-  const fetchUsers = (param: string, limit: number) => {
+  //get list of users with count
+  const fetchUsers = (param: string, limit: number, endCursor: string | null) => {
     setFetchedResults(true);
-    getUsers(`${param}` as string, limit).then((resp: any) => {
+    getUsers(`${param}` as string, limit, endCursor).then((resp: any) => {
       if(resp && resp?.response && resp?.response?.search) {
         setUsersInfo(resp?.response?.search);
       }
@@ -70,6 +76,7 @@ const Dashboard: React.SFC<{}> = () => {
 
     getUserName();
 
+    //check loggedIn state
     if(!loggedInState) {
       Router.push('/');
     }
@@ -77,64 +84,69 @@ const Dashboard: React.SFC<{}> = () => {
 
   return (
     <>
-    {
-      !fetchedResults ? (
-        <>
-          <Header username={username} avatarUrl={avatarUrl} state={fetchedResults} />
-          <div className={styles.searchPane}>
-            <div>
-              <img src={githublogo} alt="logo" />
-            </div>
-            <Input onChange={ (e) => setSearchParam(e.target.value)} />
-            <div>
-              <span className={styles.inputError}>{inputErrorMessage}</span>
-            </div>
-            <div>
-              <GitSearchButton
-              disabled={fetchedResults}
-              loading={fetchingResults}
-              onClick={ () => handleSearch() } >Search Github</GitSearchButton>
-            </div>
-          </div>
-        </>
-      ) : (
-        <>
-          <Header username={username} handleSearch={handleSearch} avatarUrl={avatarUrl} state={fetchedResults} />
-          <div className={styles.results}>
-            <div>
-              <div className={statStyles.wrapper}>
-                <div className={ !isUsersClicked ? statStyles.fetched : ''} onClick={ () => setIsUsersClicked(false) }>
-                  <p>Repositories <span>{formatCount(reposInfo && reposInfo?.repositoryCount)}</span></p>
-                </div>
-                <div className={ isUsersClicked ? statStyles.fetched : ''} onClick={ () => setIsUsersClicked(true) }>
-                  <p>Users <span>{formatCount(usersInfo && usersInfo?.userCount)}</span></p>
-                </div>
+      {
+        !fetchedResults ? (
+          <>{/* Render page with data from endpoint integration */}
+            <Header username={username} avatarUrl={avatarUrl} state={fetchedResults} />
+
+            <div className={styles.searchPane}>
+              <div>
+                <img src={githublogo} alt="logo" />
+              </div>
+              <Input onChange={ (e) => setSearchParam(e.target.value)} />
+              <div>
+                <span className={styles.inputError}>{inputErrorMessage}</span>
+              </div>
+              <div>
+                <GitSearchButton
+                disabled={fetchedResults}
+                loading={fetchingResults}
+                onClick={ () => handleSearch() } >Search Github</GitSearchButton>
               </div>
             </div>
-            <div>
-              <h2>{ isUsersClicked ? `${makeCountCommaSeperated(usersInfo && usersInfo?.userCount)} users results` : `${makeCountCommaSeperated(reposInfo && reposInfo?.repositoryCount)} repositories results`}</h2>
-              {
-                isUsersClicked ? (
-                  usersInfo?.edges.map( (item: any) => (
+          </>
+        ) : (
+          <>
+            <Header username={username} handleSearch={handleSearch} avatarUrl={avatarUrl} state={fetchedResults} />
+
+            <div className={styles.results}>
+              <div>
+                <div className={statStyles.wrapper}>
+                  <div className={ !isUsersClicked ? statStyles.fetched : ''} onClick={ () => setIsUsersClicked(false) }>
+                    <p>Repositories <span>{formatCount(reposInfo && reposInfo?.repositoryCount)}</span></p>
+                  </div>
+                  <div className={ isUsersClicked ? statStyles.fetched : ''} onClick={ () => setIsUsersClicked(true) }>
+                    <p>Users <span>{formatCount(usersInfo && usersInfo?.userCount)}</span></p>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h2>{ isUsersClicked ? `${makeCountCommaSeperated(usersInfo && usersInfo?.userCount)} users results` : `${makeCountCommaSeperated(reposInfo && reposInfo?.repositoryCount)} repositories results`}</h2>
+                {
+                  isUsersClicked ? (
+                    usersInfo?.edges.map( (item: any) => (
+                        <div className={styles.resultItem}>
+                          <UserItem name={item && item?.node?.name} otherInfo={item && item?.node?.bio} about={item && item?.node?.email} />
+                        </div>
+                      )
+                    )
+                  ) : (
+                    reposInfo?.edges.map( (item: any) => (
                       <div className={styles.resultItem}>
-                        <UserItem name={item && item?.node?.name} otherInfo={item && item?.node?.bio} about={item && item?.node?.email} />
+                        <ResultItem title={item && item?.node?.name} description={item && item?.node?.description} stars={item && item?.node?.stargazers?.totalCount} license={item && item?.node?.licenseInfo?.name} updatedTime={item && item?.node?.updateAt} />
                       </div>
+                      )
                     )
                   )
-                ) : (
-                  reposInfo?.edges.map( (item: any) => (
-                    <div className={styles.resultItem}>
-                      <ResultItem title={item && item?.node?.name} description={item && item?.node?.description} stars={item && item?.node?.stargazers?.totalCount} license={item && item?.node?.licenseInfo?.name} updatedTime={item && item?.node?.updateAt} />
-                    </div>
-                    )
-                  )
-                )
-              }
+                }
+              </div>
             </div>
-          </div>
-        </>
-      )
-    }
+          </>
+        )
+      }
+      {/* Pagination */}
+
     </>
   );
 };

@@ -14,8 +14,6 @@ const Home: NextPage<{}> = (): JSX.Element => {
     updateUser,
   } = useContext(AuthContext);
 
-  const { user, loggedIn } = useContext(AuthContext);
-
   useEffect(() => {
     const url: string = window.location.href;
     const hasCode: boolean = url.includes("?code=");

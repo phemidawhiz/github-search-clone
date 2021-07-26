@@ -6,6 +6,11 @@ interface IStars {
   totalCount: number
 }
 
+export interface IPageInfo {
+    hasNextPage: true;
+    endCursor: string;
+}
+
 export interface IUserInfo {
   bio: string;
   name: string;
@@ -23,12 +28,14 @@ export interface ISearchResultReposInfo {
   userCount: number;
   repositoryCount: number;
   edges: Array<ISearchResultRepoNode>;
+  pageInfo: IPageInfo;
 }
 
 export interface ISearchResultUsersInfo {
   userCount: number;
   repositoryCount: number;
   edges: Array<IUserInfo>;
+  pageInfo: IPageInfo;
 }
 
 
